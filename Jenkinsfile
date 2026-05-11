@@ -15,7 +15,7 @@ pipeline {
             steps {
 
                 git branch: 'main',
-                url: 'https://github.com/YOUR_USERNAME/jenkins-CK.git'
+                url: 'https://github.com/amithps1996/jenkins-CK.git'
             }
         }
 
