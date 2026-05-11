@@ -4,7 +4,7 @@ pipeline {
 
     environment {
 
-        JFROG_URL = "http:/http://4.240.17.188:8082/artifactory"
+        JFROG_URL = "http://4.240.17.188:8082/artifactory"
         ARTIFACT_NAME = "artifact.txt"
     }
 
@@ -40,7 +40,11 @@ pipeline {
                     mkdir -p output
 
                     echo "Build artifact generated" > output/artifact.txt
+
+                    ls -R
                 '''
+
+                stash includes: 'output/**', name: 'build-artifact'
             }
         }
 
@@ -68,6 +72,8 @@ pipeline {
 
             steps {
 
+                unstash 'build-artifact'
+
                 withCredentials([
                     usernamePassword(
                         credentialsId: '9a34a1f4-536a-45ac-84e3-3c76e1212b31',
@@ -77,7 +83,11 @@ pipeline {
                 ]) {
 
                     sh '''
-                        curl -u $JF_USER:$JF_PASS \
+                        echo "Checking artifact"
+
+                        ls -R
+
+                        curl -v -u $JF_USER:$JF_PASS \
                         -T output/artifact.txt \
                         $JFROG_URL/demo-repo/artifact.txt
                     '''
@@ -118,7 +128,11 @@ spec:
                 container('kubectl') {
 
                     sh '''
+                        echo "Deploying application"
+
                         kubectl apply -f deployment.yaml
+
+                        echo "Checking pods"
 
                         kubectl get pods
                     '''
@@ -132,7 +146,7 @@ spec:
 
                 input message: 'Approve deployment cleanup?'
 
-                echo "Deployment verified"
+                echo "Deployment verified successfully"
             }
         }
 
@@ -141,6 +155,8 @@ spec:
             steps {
 
                 sh '''
+                    echo "Deleting deployment"
+
                     kubectl delete -f deployment.yaml
                 '''
             }
