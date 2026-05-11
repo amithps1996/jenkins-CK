@@ -4,7 +4,7 @@ pipeline {
 
     environment {
 
-        JFROG_URL = "http://YOUR_VM_IP:8081/artifactory"
+        JFROG_URL = "http:/http://4.240.17.188:8082/artifactory"
         ARTIFACT_NAME = "artifact.txt"
     }
 
