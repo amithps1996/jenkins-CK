@@ -70,7 +70,7 @@ pipeline {
 
                 withCredentials([
                     usernamePassword(
-                        credentialsId: 'jfrog-creds',
+                        credentialsId: '9a34a1f4-536a-45ac-84e3-3c76e1212b31',
                         usernameVariable: 'JF_USER',
                         passwordVariable: 'JF_PASS'
                     )
